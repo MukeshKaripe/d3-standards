@@ -1,0 +1,219 @@
+
+<!-- bar chart starts here -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 Bar Chart Example</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg id="chart"></svg>
+
+  <script>
+    // Sample data
+    const data = [
+      { name: "A", value: 20 },
+      { name: "B", value: 35 },
+      { name: "C", value: 15 },
+      { name: "D", value: 25 },
+      { name: "E", value: 10 }
+    ];
+
+    // Chart dimensions
+    const width = 400;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    // Create SVG element
+    const svg = d3.select("#chart")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Create chart group
+    const chart = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Create x-scale
+    const xScale = d3.scaleBand()
+      .domain(data.map(d => d.name))
+      .range([0, chartWidth])
+      .padding(0.1);
+
+    // Create y-scale
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.value)])
+      .range([chartHeight, 0]);
+
+    // Create x-axis
+    const xAxis = d3.axisBottom(xScale);
+
+    // Create y-axis
+    const yAxis = d3.axisLeft(yScale);
+
+    // Add x-axis to chart
+    chart.append("g")
+      .attr("transform", `translate(0, ${chartHeight})`)
+      .call(xAxis);
+
+    // Add y-axis to chart
+    chart.append("g")
+      .call(yAxis);
+
+    // Create bars
+    const bars = chart.selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", d => xScale(d.name))
+      .attr("y", d => yScale(d.value))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => chartHeight - yScale(d.value))
+      .attr("fill", "steelblue");
+  </script>
+</body>
+</html>
+<!-- bar chart ends here -->
+
+
+<!-- pie chart example starts here -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 Pie Chart Example</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg id="chart"></svg>
+
+  <script>
+    // Sample data
+    const data = [
+      { label: "A", value: 20 },
+      { label: "B", value: 35 },
+      { label: "C", value: 15 },
+      { label: "D", value: 25 },
+      { label: "E", value: 10 }
+    ];
+
+    // Chart dimensions
+    const width = 400;
+    const height = 300;
+    const radius = Math.min(width, height) / 2;
+
+    // Create SVG element
+    const svg = d3.select("#chart")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Create chart group
+    const chart = svg.append("g")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    // Create pie layout
+    const pie = d3.pie()
+      .value(d => d.value);
+
+    // Generate pie slices
+    const arcs = pie(data);
+
+    // Create arc generator
+    const arc = d3.arc()
+      .innerRadius(0)
+      .outerRadius(radius);
+
+    // Add slices to chart
+    chart.selectAll(".slice")
+      .data(arcs)
+      .enter()
+      .append("path")
+      .attr("class", "slice")
+      .attr("d", arc)
+      .attr("fill", (d, i) => d3.schemeCategory10[i]);
+  </script>
+</body>
+</html>
+
+
+<!-- pie chart example ends here -->
+
+
+<!-- line chart example starts here -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 Line Chart Example</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg id="chart"></svg>
+
+  <script>
+    // Sample data
+    const data = [
+      { x: 0, y: 20 },
+      { x: 1, y: 35 },
+      { x: 2, y: 15 },
+      { x: 3, y: 25 },
+      { x: 4, y: 10 }
+    ];
+
+    // Chart dimensions
+    const width = 400;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    // Create SVG element
+    const svg = d3.select("#chart")
+      .attr("width", width)
+      .attr("height", height);
+
+    // Create chart group
+    const chart = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Create x-scale
+    const xScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.x)])
+      .range([0, chartWidth]);
+
+    // Create y-scale
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.y)])
+      .range([chartHeight, 0]);
+
+    // Create line generator
+    const line = d3.line()
+      .x(d => xScale(d.x))
+      .y(d => yScale(d.y));
+
+    // Add line path to chart
+    chart.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+    // Add x-axis to chart
+    chart.append("g")
+      .attr("transform", `translate(0, ${chartHeight})`)
+      .call(d3.axisBottom(xScale));
+
+    // Add y-axis to chart
+    chart.append("g")
+      .call(d3.axisLeft(yScale));
+  </script>
+</body>
+</html>
+
+
+
+<!-- line chart example ends here -->
