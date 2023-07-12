@@ -11,7 +11,7 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 
 <style>
-  #id-imp{
+  /* #id-imp{
        color: red;
        font-weight: bold;
        border: 1px solid #222;
@@ -35,6 +35,17 @@ rect{
  opacity: .75;
 
 
+} */
+.label{
+  font-size: 30px;
+  font-weight: bold;
+
+}
+
+.inside{
+  font-size: 20px;
+  font-weight: bold;
+  fill: #fff;
 }
 
 
@@ -47,7 +58,7 @@ rect{
   <p>Element 3</p>
   <button class="id-imp">button</button> -->
 
-
+<div id="chart-container" ></div>
 <div id="chart">
 
 </div>
@@ -60,7 +71,73 @@ rect{
 
 
 
-<script src="/barchart.js"></script>
+
+
+<script src="/d3piebar.js"></script>
+
+
+<!-- <script>
+    // Sample data
+    const data = [
+      { x: 0, y: 20 },
+      { x: 1, y: 35 },
+      { x: 2, y: 15 },
+      { x: 3, y: 25 },
+      { x: 4, y: 10 }
+    ];
+
+    // Chart dimensions
+    const width = 400;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    // Create SVG element
+    const svg = d3.select("#chart")
+    .append('svg')
+      .attr("width", width)
+      .attr("height", height);
+
+    // Create chart group by refering as g
+    const chart = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Create x-scale
+    const xScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.x)])
+      .range([0, chartWidth]);
+
+    // Create y-scale
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.y)])
+      .range([chartHeight, 0]);
+
+    // Create line generator
+    const line = d3.line()
+    .x(d => xScale(d.x))
+      // .x(d => xScale(d.x))
+      .y( d => yScale(d.y));
+
+    // Add line path to chart
+    chart.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+      // giving axis
+      const xaxis=
+      chart.append('g')
+      .attr(`transform`,`translate(0,${chartHeight})`)
+      .call(d3.axisBottom(xScale));
+      const yaxis=
+chart.append('g')
+       .call(d3.axisLeft(yScale));
+
+      
+</script> -->
 
   <!-- <script>
     var elements = document.getElementsByClassName('myClass');

@@ -23,7 +23,7 @@
               
 // }
 
-const margin ={top:70,right:30,bottom:40,left:80};
+const margin ={"top":70,right:30,"bottom":40,left:80};
 const width=1200-margin.left - margin.right;
 const height=500-margin.top-margin.bottom;
 
@@ -127,9 +127,7 @@ svg.selectAll('xGrid')
 .attr('stroke','#e0e0e0')
 .attr('stroke-width',0.5);
 
-const line = d3.line()
-.x(d => x(d.date))
-.y(d => y(d.population));
+
 
 // add horizontal gridlines
 svg.selectAll('yGrid')
@@ -161,11 +159,17 @@ svg.append('text')
 
 .text('Total Population');
 
+// create a line
+const line = d3.line()
+.x(d => x(d.date))
+.y(d => y(d.population));
+
 // add line path to svg element
 const path= svg.append('path')
 .datum(data)
 // .data(data)
 .attr('fill','none')
+// .attr('transform',`rotate(${-180})`)
 .attr('stroke','steelblue')
 .attr('stroke-width',2)
 .attr('d',line);
@@ -190,23 +194,23 @@ const listeningRect = svg.append('rect')
 .attr('height',height);
 
 // creating mouse function
-listeningRect.on('mousemove', function(event){
+listeningRect.on("mousemove", function(event)  {
   const [xCoord] = d3.pointer(event,this);
   const bisectDate = d3.bisector(d => d.date).left;
   // bisector takes clossest data.
   const x0 = x.invert(xCoord);
-  const i = bisectDate(data,x0,1);
-  const d0 = data[i-1];
+  const i = bisectDate(data, x0 ,1);
+  const d0 = data[i - 1];
   const d1 = data[i];
   const d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-  const xPos=x(d.date);
-  const yPos=y(d.population);
+  const xPos = x(d.date);
+  const yPos = y(d.population);
 
 
 // update the circle position
 
-circle.attr('cx',xPos)
-.attr('cy',yPos);
+circle.attr('cx', xPos)
+.attr('cy', yPos);
 
 // console.log(yPos);
 
@@ -214,18 +218,15 @@ circle.attr('cx',xPos)
 
 circle.transition()
 .duration(50)
-.attr('r',5);
+.attr('r',  5);
 
 // add in our tooltip
 tooltip
-.style('dispay','block')
-.style('left',`${xPos + 100}px`)
-.style('top',`${yPos + 50}px`)
-.html(`<strong>Date:</strong> ${d.date.toLocaleDateString()}<br><strong>Population:</strong> ${d.population !== undefined ? (d.population / 1000).toFixed(0) + 'k' : 'N/A'} `);
-
-
-
-});
+      .style("display", "block")
+      .style("left", `${xPos + 100}px`)
+      .style("top", `${yPos + 50}px`)
+      .html(`<strong>Date:</strong> ${d.date.toLocaleDateString()}<br><strong>Population:</strong> ${d.population !== undefined ? (d.population / 1000).toFixed(0) + 'k' : 'N/A'}`)
+  });
 // listening rectangle mouse leave function
 
 listeningRect.on("mouseleave", function () {
